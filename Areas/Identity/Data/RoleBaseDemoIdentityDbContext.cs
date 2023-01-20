@@ -1,0 +1,53 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+
+namespace RoleBaseDemo.Areas.Identity.Data;
+
+public class RoleBaseDemoIdentityDbContext : IdentityDbContext<IdentityUser>
+{
+    public RoleBaseDemoIdentityDbContext()
+        : base()
+    {
+    }
+    public RoleBaseDemoIdentityDbContext(DbContextOptions<RoleBaseDemoIdentityDbContext> options)
+        : base(options)
+    {
+    }
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+        // Customize the ASP.NET Identity model and override the defaults if needed.
+        // For example, you can rename the ASP.NET Identity table names and more.
+        // Add your customizations after calling base.OnModelCreating(builder);
+        builder.Entity<IdentityUser>(entity =>
+        {
+            entity.ToTable(name: "users");
+        });
+        builder.Entity<IdentityRole>(entity =>
+        {
+            entity.ToTable(name: "roles");
+        });
+        builder.Entity<IdentityUserRole<string>>(entity =>
+        {
+            entity.ToTable("user_roles");
+        });
+        builder.Entity<IdentityUserClaim<string>>(entity =>
+        {
+            entity.ToTable("user_claims");
+        });
+        builder.Entity<IdentityUserLogin<string>>(entity =>
+        {
+            entity.ToTable("user_logins");
+        });
+        builder.Entity<IdentityRoleClaim<string>>(entity =>
+        {
+            entity.ToTable("role_claims");
+        });
+        builder.Entity<IdentityUserToken<string>>(entity =>
+        {
+            entity.ToTable("user_tokens");
+        });
+    }
+}
